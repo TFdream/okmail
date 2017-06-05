@@ -1,2 +1,2 @@
-# melon
-Melon is Simple JavaMail client.
+# Melon
+Melon is a simple JavaMail client.
