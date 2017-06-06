@@ -80,9 +80,8 @@ public class AppTest {
     }
 
     @Test
-    public void testTemplate() throws IOException, MessagingException {
+    public void testThymeleafTemplate() throws IOException, MessagingException {
 
-        //use thymeleaf
         ClassLoaderTemplateResolver templateResolver =
                 new ClassLoaderTemplateResolver();
 
@@ -111,7 +110,7 @@ public class AppTest {
 
         Mail mail = Mail.newBuilder().from(from,"ricky fung")
                 .to(to)
-                .subject("测试邮件[Attachment]")
+                .subject("测试邮件[模板邮件-Thymeleaf]")
                 .html(output)
                 .build();
 
@@ -119,7 +118,7 @@ public class AppTest {
     }
 
     @Test
-    public void testTemplateV() throws IOException, MessagingException {
+    public void testVelocityTemplate() throws IOException, MessagingException {
 
         Properties props = new Properties();
         props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("velocity.properties"));
@@ -141,7 +140,7 @@ public class AppTest {
 
         Mail mail = Mail.newBuilder().from(from,"ricky fung")
                 .to(to)
-                .subject("测试邮件[Attachment]")
+                .subject("测试邮件[模板邮件-Velocity]")
                 .html(output)
                 .build();
 

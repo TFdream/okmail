@@ -1,5 +1,5 @@
 # Melon
-Melon aims to provide a simplify API for sending email.
+Melon built on top of the Java Mail API, aims to provide a simplify API for sending email.
 
 ## Features
 * Built on top of the Java Mail API, aims to provide a simplify API for sending email.
@@ -13,7 +13,7 @@ Melon aims to provide a simplify API for sending email.
 <dependency>
   <groupId>com.mindflow</groupId>
   <artifactId>melon</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
@@ -56,7 +56,7 @@ public class AppTest {
     @Test
     public void testSendHtml() throws MessagingException {
 
-        Mail mail = Mail.newBuilder().from(from,"VIP")
+        Mail mail = Mail.newBuilder().from(from, "ricky fung")
                 .to(to)
                 .subject("测试邮件[HTML]")
                 .html("<h1 font=red>信件内容</h1>")
@@ -68,7 +68,7 @@ public class AppTest {
     @Test
     public void testSendAttach() throws MessagingException, IOException {
 
-        Mail mail = Mail.newBuilder().from(from,"ricky fung")
+        Mail mail = Mail.newBuilder().from(from, "ricky fung")
                 .to(to)
                 .subject("测试邮件[Attachment]")
                 .html("<h1 font=red>信件内容</h1>")
@@ -79,9 +79,8 @@ public class AppTest {
     }
 
     @Test
-    public void testTemplate() throws IOException, MessagingException {
+    public void testThymeleafTemplate() throws IOException, MessagingException {
 
-        //use thymeleaf
         ClassLoaderTemplateResolver templateResolver =
                 new ClassLoaderTemplateResolver();
 
@@ -99,6 +98,7 @@ public class AppTest {
         Context ctx = new Context();
         ctx.setLocale(Locale.ENGLISH);
         ctx.setVariable("username", "ricky");
+        ctx.setVariable("url", "http://www.thymeleaf.org");
         ctx.setVariable("email", "ricky_feng@163.com");
 
         StringWriter sw = new StringWriter(1024);
@@ -109,7 +109,37 @@ public class AppTest {
 
         Mail mail = Mail.newBuilder().from(from,"ricky fung")
                 .to(to)
-                .subject("测试邮件[Template]")
+                .subject("测试邮件[模板邮件-Thymeleaf]")
+                .html(output)
+                .build();
+
+        melon.send(mail);
+    }
+
+    @Test
+    public void testVelocityTemplate() throws IOException, MessagingException {
+
+        Properties props = new Properties();
+        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("velocity.properties"));
+        VelocityEngine ve = new VelocityEngine(props);
+        ve.init();
+
+        Template t = ve.getTemplate("/templates/registry.vm");
+        VelocityContext context = new VelocityContext();
+
+        context.put("username", "ricky");
+        context.put("url", "http://www.thymeleaf.org");
+        context.put("email", "ricky_feng@163.com");
+
+        StringWriter sw = new StringWriter(1024);
+        t.merge(context, sw);
+
+        String output = sw.toString();
+        System.out.println(output);
+
+        Mail mail = Mail.newBuilder().from(from,"ricky fung")
+                .to(to)
+                .subject("测试邮件[模板邮件-Velocity]")
                 .html(output)
                 .build();
 
