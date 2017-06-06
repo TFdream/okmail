@@ -1,13 +1,15 @@
 package melon;
 
 import melon.util.StringUtils;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import java.util.Arrays;
+import javax.mail.internet.MimeMultipart;
 import java.util.Date;
 import java.util.Properties;
 
@@ -25,8 +27,8 @@ public class Melon {
     private final Boolean auth;
     private final Boolean ssl;
     private final Boolean debug;
-    private final int timeout;
 
+    private String mailer = "--Send by Melon--";
     private final Session session;
 
     private Melon(Builder builder) {
@@ -38,7 +40,6 @@ public class Melon {
         this.auth = builder.auth;
         this.ssl = builder.ssl;
         this.debug = builder.debug;
-        this.timeout = builder.timeout;
 
         this.session = Session.getInstance(getConfig(), new DefaultAuthenticator(username, password));
         if (debug) {
@@ -52,8 +53,12 @@ public class Melon {
     }
 
     private Message convertToMessage(Mail mail) throws MessagingException {
-        Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(mail.getFrom()));
+        MimeMessage msg = new MimeMessage(session);
+        if(StringUtils.isNotEmpty(mail.getNickname())) {
+            msg.setFrom(new InternetAddress(String.format("%s<%s>", mail.getNickname(), mail.getFrom())));
+        } else {
+            msg.setFrom(new InternetAddress(mail.getFrom()));
+        }
         if(mail.getTo()!=null && mail.getTo().length>0) {
             InternetAddress[] address = new InternetAddress[mail.getTo().length];
             for(int i=0; i<mail.getTo().length; i++) {
@@ -68,19 +73,55 @@ public class Melon {
             }
             msg.setRecipients(Message.RecipientType.CC, address);
         }
+        if(mail.getBcc()!=null && mail.getBcc().length>0) {
+            InternetAddress[] address = new InternetAddress[mail.getBcc().length];
+            for(int i=0; i<mail.getBcc().length; i++) {
+                address[i] = new InternetAddress(mail.getBcc()[i]);
+            }
+            msg.setRecipients(Message.RecipientType.BCC, address);
+        }
 
         msg.setSubject(mail.getSubject());
-        if (mail.getMultipart() != null) {
-            msg.setContent(mail.getMultipart());
+
+        MimeMultipart cover = new MimeMultipart();
+        if(mail.getHtml()!=null) {
+            cover.addBodyPart(buildHtmlPart(mail.getHtml()));
         } else {
-            msg.setText(mail.getText());
+            cover.addBodyPart(buildTextPart(mail.getText()));
         }
+
+        boolean hasAttachments = mail.getAttachments() != null && mail.getAttachments().size()>0;
+        MimeMultipart content = cover;
+        if (hasAttachments) {   //有附件
+            content = new MimeMultipart();
+            MimeBodyPart wrap = new MimeBodyPart();
+            wrap.setContent(cover);
+            content.addBodyPart(wrap);
+            //添加附件
+            for (MimeBodyPart attachment : mail.getAttachments()) {
+                content.addBodyPart(attachment);
+            }
+        }
+        msg.setContent(content);
+        msg.setHeader("X-Mailer", mailer);
         msg.setSentDate(new Date());
         return msg;
     }
 
     public static Builder newBuilder() {
         return new Builder();
+    }
+
+    private MimeBodyPart buildTextPart(String text) throws MessagingException {
+        MimeBodyPart bodyPart = new MimeBodyPart();
+        bodyPart.setText(text);
+        return bodyPart;
+    }
+
+    private MimeBodyPart buildHtmlPart(String html) throws MessagingException {
+        MimeBodyPart bodyPart = new MimeBodyPart();
+        bodyPart.setContent(html, "text/html; charset=utf-8");
+        return bodyPart;
     }
 
     private Properties getConfig() {
@@ -91,7 +132,6 @@ public class Melon {
         props.put("mail.debug", debug);
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", port);
-        props.put("mail.smtp.timeout", timeout);
         return props;
     }
 
@@ -104,7 +144,6 @@ public class Melon {
         private Boolean auth;
         private Boolean ssl;
         private Boolean debug;
-        private int timeout;
 
         public Builder host(String host) {
             this.host = host;
@@ -137,10 +176,6 @@ public class Melon {
         }
         public Builder debug(boolean debug) {
             this.debug = debug;
-            return this;
-        }
-        public Builder timeout(int timeout) {
-            this.timeout = timeout;
             return this;
         }
 
