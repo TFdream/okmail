@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Good Thymes Virtual Grocery</title>
+        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    </head>
+
+    <body>
+        <div>
+            <p><b><span th:text="${username}"></span></b>, 你好：</p>
+            <p>你已经注册了Facebook。请验证账户，完成注册步骤。</p>
+            <p><a href="details.html" th:href="@{${url}}">验证账户</a></p>
+            <p>如有问题请联系管理员 <span th:text="${email}"></span></p>
+            <p></p>
+            <p>(这是一封自动产生的email，请勿回复。)</p>
+        </div>
+    </body>
+
+</html>
