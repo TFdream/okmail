@@ -24,7 +24,7 @@ public class AppTest {
 
     private String from = "java_mail_001@163.com";
     private String password = "javamail";
-    private String to = "java_mail_003@163.com";
+    private String to = "java_mail_002@163.com";
 
     private Melon melon;
 
@@ -47,6 +47,7 @@ public class AppTest {
 
         Mail mail = Mail.newBuilder().from(from)
                 .to(to)
+                .cc("java_mail_002@163.com", "java_mail_004@163.com")
                 .subject("测试邮件[普通文本]")
                 .text("信件内容")
                 .build();
