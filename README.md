@@ -5,7 +5,7 @@ Melon aims to provide a simplify API for sending email.
 * Built on top of the Java Mail API, aims to provide a simplify API for sending email.
 * Supports text based emails/ HTML formatted emails/ text message with attachments .
 * Supports CC/BCC
-* Supports HTML Template( use Thymeleaf as Template Engine)
+* Supports HTML Email Template(use Thymeleaf or Velocity as Template Engine)
 
 ## Quick Start
 1. maven dependency

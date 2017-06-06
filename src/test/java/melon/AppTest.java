@@ -1,22 +1,21 @@
 package melon;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
 import org.junit.Before;
 import org.junit.Test;
-import org.thymeleaf.EngineConfiguration;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.context.ExpressionContext;
-import org.thymeleaf.context.IContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Locale;
+import java.util.Properties;
 
 /**
  * Unit test for simple App.
@@ -106,6 +105,36 @@ public class AppTest {
 
         StringWriter sw = new StringWriter(1024);
         templateEngine.process("registry", ctx, sw);
+
+        String output = sw.toString();
+        System.out.println(output);
+
+        Mail mail = Mail.newBuilder().from(from,"ricky fung")
+                .to(to)
+                .subject("测试邮件[Attachment]")
+                .html(output)
+                .build();
+
+        melon.send(mail);
+    }
+
+    @Test
+    public void testTemplateV() throws IOException, MessagingException {
+
+        Properties props = new Properties();
+        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("velocity.properties"));
+        VelocityEngine ve = new VelocityEngine(props);
+        ve.init();
+
+        Template t = ve.getTemplate("/templates/registry.vm");
+        VelocityContext context = new VelocityContext();
+
+        context.put("username", "ricky");
+        context.put("url", "http://www.thymeleaf.org");
+        context.put("email", "ricky_feng@163.com");
+
+        StringWriter sw = new StringWriter(1024);
+        t.merge(context, sw);
 
         String output = sw.toString();
         System.out.println(output);
