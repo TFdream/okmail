@@ -1,4 +1,4 @@
-package melon;
+package okmail;
 
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;

@@ -1,4 +1,4 @@
-package melon.util;
+package okmail.util;
 
 /**
  * ${DESCRIPTION}

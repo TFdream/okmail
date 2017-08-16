@@ -1,6 +1,6 @@
-package melon;
+package okmail;
 
-import melon.util.StringUtils;
+import okmail.util.StringUtils;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,7 +18,7 @@ import java.util.Properties;
  *
  * @author Ricky Fung
  */
-public class Melon {
+public class OkMailClient {
     private final String host;
     private final int port;
     private final String protocol;
@@ -28,10 +28,10 @@ public class Melon {
     private final Boolean ssl;
     private final Boolean debug;
 
-    private String mailer = "--Send by Melon--";
+    private String mailer = "--Send by OkMail--";
     private final Session session;
 
-    private Melon(Builder builder) {
+    private OkMailClient(Builder builder) {
         this.host = builder.host;
         this.port = builder.port;
         this.protocol = builder.protocol;
@@ -179,7 +179,7 @@ public class Melon {
             return this;
         }
 
-        public Melon build() {
+        public OkMailClient build() {
             if(StringUtils.isBlank(this.protocol)){
                 this.protocol = "smtp";
             }
@@ -192,7 +192,7 @@ public class Melon {
             if(this.debug==null) {
                 this.debug = Boolean.FALSE;
             }
-            return new Melon(this);
+            return new OkMailClient(this);
         }
     }
 

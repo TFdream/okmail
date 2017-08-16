@@ -1,4 +1,4 @@
-package melon;
+package okmail;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

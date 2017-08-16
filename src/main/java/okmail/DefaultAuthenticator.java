@@ -1,4 +1,4 @@
-package melon;
+package okmail;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

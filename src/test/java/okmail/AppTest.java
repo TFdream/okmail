@@ -1,4 +1,4 @@
-package melon;
+package okmail;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -23,19 +23,18 @@ import java.util.Properties;
 public class AppTest {
 
     private String from = "java_mail_001@163.com";
-    private String password = "javamail";
     private String to = "java_mail_002@163.com";
 
-    private Melon melon;
+    private OkMailClient client;
 
     @Before
     public void before() throws Exception {
-        this.melon = Melon.newBuilder()
+        this.client = OkMailClient.newBuilder()
                 .host("smtp.163.com")
                 .port(465)
                 .protocol("smtp")
                 .username(from)
-                .password(password)
+                .password("javamail")
                 .debug(true)
                 .auth(true)
                 .ssl(true)
@@ -52,7 +51,7 @@ public class AppTest {
                 .text("信件内容")
                 .build();
 
-        melon.send(mail);
+        client.send(mail);
     }
 
     @Test
@@ -64,7 +63,7 @@ public class AppTest {
                 .html("<h1 font=red>信件内容</h1>")
                 .build();
 
-        melon.send(mail);
+        client.send(mail);
     }
 
     @Test
@@ -74,10 +73,10 @@ public class AppTest {
                 .to(to)
                 .subject("测试邮件[Attachment]")
                 .html("<h1 font=red>信件内容</h1>")
-                .attach(new File("F:/github/melon/README.md"), "测试README.md")
+                .attach(new File("F:/github/okmail/README.md"), "测试README.md")
                 .build();
 
-        melon.send(mail);
+        client.send(mail);
     }
 
     @Test
@@ -115,7 +114,7 @@ public class AppTest {
                 .html(output)
                 .build();
 
-        melon.send(mail);
+        client.send(mail);
     }
 
     @Test
@@ -145,6 +144,6 @@ public class AppTest {
                 .html(output)
                 .build();
 
-        melon.send(mail);
+        client.send(mail);
     }
 }

@@ -1,4 +1,4 @@
-package melon;
+package okmail;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
