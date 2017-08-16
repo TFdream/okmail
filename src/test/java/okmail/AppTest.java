@@ -4,6 +4,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -28,6 +29,7 @@ public class AppTest {
     private OkMailClient client;
 
     @Before
+    @Ignore
     public void before() throws Exception {
         this.client = OkMailClient.newBuilder()
                 .host("smtp.163.com")
@@ -42,6 +44,7 @@ public class AppTest {
     }
 
     @Test
+    @Ignore
     public void testSendText() throws MessagingException {
 
         Mail mail = Mail.newBuilder().from(from)
@@ -55,6 +58,7 @@ public class AppTest {
     }
 
     @Test
+    @Ignore
     public void testSendHtml() throws MessagingException {
 
         Mail mail = Mail.newBuilder().from(from, "ricky fung")
@@ -67,6 +71,7 @@ public class AppTest {
     }
 
     @Test
+    @Ignore
     public void testSendAttach() throws MessagingException, IOException {
 
         Mail mail = Mail.newBuilder().from(from, "ricky fung")
@@ -80,6 +85,7 @@ public class AppTest {
     }
 
     @Test
+    @Ignore
     public void testThymeleafTemplate() throws IOException, MessagingException {
 
         ClassLoaderTemplateResolver templateResolver =
@@ -118,6 +124,7 @@ public class AppTest {
     }
 
     @Test
+    @Ignore
     public void testVelocityTemplate() throws IOException, MessagingException {
 
         Properties props = new Properties();

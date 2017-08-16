@@ -1,5 +1,6 @@
 package okmail;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -16,6 +17,7 @@ import java.util.Locale;
 public class ThymeleafTest {
 
     @Test
+    @Ignore
     public void testApp() throws IOException {
 
         //use thymeleaf

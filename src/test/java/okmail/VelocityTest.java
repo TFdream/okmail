@@ -3,6 +3,7 @@ package okmail;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,6 +16,7 @@ import java.util.Properties;
 public class VelocityTest {
 
     @Test
+    @Ignore
     public void testApp() throws IOException {
 
         Properties props = new Properties();
