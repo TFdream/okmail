@@ -10,7 +10,7 @@ The minimum requirements to run the quick start are:
 * A java-based project management software like [Maven](https://maven.apache.org/) or [Gradle](http://gradle.org/)
 
 ## Features
-* Built on top of the Java Mail API, aims to provide a simplify API for sending email.
+* Built on top of the [Java Mail](https://javaee.github.io/javamail/) API, aims to provide a simplify API for sending email.
 * Supports text based emails/ HTML formatted emails/ text message with attachments .
 * Supports CC/BCC
 * Supports HTML Email Template(use Thymeleaf or Velocity as Template Engine)
