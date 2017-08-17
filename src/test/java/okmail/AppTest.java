@@ -47,7 +47,7 @@ public class AppTest {
     @Ignore
     public void testSendText() throws MessagingException {
 
-        Mail mail = Mail.newBuilder().from(from)
+        Mail mail = Mail.newBuilder().from(from, "风清扬")
                 .to(to)
                 .cc("java_mail_002@163.com", "java_mail_004@163.com")
                 .subject("测试邮件[普通文本]")

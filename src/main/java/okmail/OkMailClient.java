@@ -6,10 +6,8 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -54,11 +52,18 @@ public class OkMailClient {
 
     private Message convertToMessage(Mail mail) throws MessagingException {
         MimeMessage msg = new MimeMessage(session);
+        String from = mail.getFrom()==null ? username: mail.getFrom();
         if(StringUtils.isNotEmpty(mail.getNickname())) {
-            msg.setFrom(new InternetAddress(String.format("%s<%s>", mail.getNickname(), mail.getFrom())));
+            try {
+                String nickName = MimeUtility.encodeText(mail.getNickname());
+                msg.setFrom(new InternetAddress(String.format("%s<%s>", nickName, from)));
+            } catch (UnsupportedEncodingException e) {
+                throw new MessagingException("encode nickname failure:"+mail.getNickname(), e);
+            }
         } else {
-            msg.setFrom(new InternetAddress(mail.getFrom()));
+            msg.setFrom(new InternetAddress(from));
         }
+
         if(mail.getTo()!=null && mail.getTo().length>0) {
             InternetAddress[] address = new InternetAddress[mail.getTo().length];
             for(int i=0; i<mail.getTo().length; i++) {
