@@ -53,7 +53,7 @@ public class OkMailClient {
     private Message convertToMessage(Mail mail) throws MessagingException, UnsupportedEncodingException {
         MimeMessage msg = new MimeMessage(session);
         if(StringUtils.isNotEmpty(mail.getNickname())) {
-            msg.setFrom(new InternetAddress(mail.getFrom(), mail.getNickname(), MimeUtility.javaCharset("gb2312")));
+            msg.setFrom(new InternetAddress(mail.getFrom(), mail.getNickname(), MimeUtility.javaCharset("utf-8")));
         } else {
             msg.setFrom(new InternetAddress(mail.getFrom()));
         }
