@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -45,7 +46,7 @@ public class AppTest {
 
     @Test
     @Ignore
-    public void testSendText() throws MessagingException {
+    public void testSendText() throws MessagingException, UnsupportedEncodingException {
 
         Mail mail = Mail.newBuilder().from(from)
                 .to(to)
@@ -59,7 +60,7 @@ public class AppTest {
 
     @Test
     @Ignore
-    public void testSendHtml() throws MessagingException {
+    public void testSendHtml() throws MessagingException, UnsupportedEncodingException {
 
         Mail mail = Mail.newBuilder().from(from, "ricky fung")
                 .to(to)
