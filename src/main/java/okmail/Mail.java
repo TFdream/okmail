@@ -78,7 +78,7 @@ public class Mail {
         return attachments;
     }
 
-    static class Builder {
+    public static class Builder {
         private String from;
         private String nickname;
         private String[] to;

@@ -6,10 +6,8 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.*;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -47,15 +45,15 @@ public class OkMailClient {
         }
     }
 
-    public void send(Mail mail) throws MessagingException {
+    public void send(Mail mail) throws MessagingException, UnsupportedEncodingException {
         Message msg = convertToMessage(mail);
         Transport.send(msg);
     }
 
-    private Message convertToMessage(Mail mail) throws MessagingException {
+    private Message convertToMessage(Mail mail) throws MessagingException, UnsupportedEncodingException {
         MimeMessage msg = new MimeMessage(session);
         if(StringUtils.isNotEmpty(mail.getNickname())) {
-            msg.setFrom(new InternetAddress(String.format("%s<%s>", mail.getNickname(), mail.getFrom())));
+            msg.setFrom(new InternetAddress(mail.getFrom(), mail.getNickname(), MimeUtility.javaCharset("gb2312")));
         } else {
             msg.setFrom(new InternetAddress(mail.getFrom()));
         }
@@ -135,7 +133,7 @@ public class OkMailClient {
         return props;
     }
 
-    static class Builder {
+    public static class Builder {
         private String host;
         private int port;
         private String protocol;  //默认smtp
