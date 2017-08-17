@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Release Version](https://img.shields.io/badge/release-1.0.0-red.svg)](https://github.com/TiFG/okmail/releases) [![Build Status](https://travis-ci.org/TiFG/okmail.svg?branch=master)](https://travis-ci.org/TiFG/okmail)
 
 ## Overview
-An Email client Java applications. For more information see [the wiki](https://github.com/TiFG/okmail/wiki).
+An Email client for Java applications. For more information see [the wiki](https://github.com/TiFG/okmail/wiki).
 
 ## Requirements
 The minimum requirements to run the quick start are:
