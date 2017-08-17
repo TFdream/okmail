@@ -1,4 +1,4 @@
-package okmail.util;
+package okmail.internal.util;
 
 /**
  * ${DESCRIPTION}

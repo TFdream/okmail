@@ -1,5 +1,7 @@
-package okmail;
+package okmail.demo;
 
+import okmail.Mail;
+import okmail.OkMailClient;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -21,7 +23,7 @@ import java.util.Properties;
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+public class OkMailClientTest {
 
     private String from = "java_mail_001@163.com";
     private String to = "java_mail_002@163.com";

@@ -1,4 +1,4 @@
-package okmail;
+package okmail.demo;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

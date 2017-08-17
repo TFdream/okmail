@@ -1,4 +1,4 @@
-package okmail;
+package okmail.demo;
 
 import org.junit.Ignore;
 import org.junit.Test;

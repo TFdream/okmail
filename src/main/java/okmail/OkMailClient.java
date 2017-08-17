@@ -1,6 +1,7 @@
 package okmail;
 
-import okmail.util.StringUtils;
+import okmail.internal.Constants;
+import okmail.internal.util.StringUtils;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -25,8 +26,8 @@ public class OkMailClient {
     private final Boolean auth;
     private final Boolean ssl;
     private final Boolean debug;
+    private final String mailer;
 
-    private String mailer = "--Send by OkMail--";
     private final Session session;
 
     private OkMailClient(Builder builder) {
@@ -38,10 +39,10 @@ public class OkMailClient {
         this.auth = builder.auth;
         this.ssl = builder.ssl;
         this.debug = builder.debug;
-
-        this.session = Session.getInstance(getConfig(), new DefaultAuthenticator(username, password));
+        this.mailer = builder.mailer;
+        this.session = Session.getInstance(getConfig(), new DefaultAuthenticator(this.username, this.password));
         if (debug) {
-            session.setDebug(true);
+            this.session.setDebug(true);
         }
     }
 
@@ -108,7 +109,7 @@ public class OkMailClient {
             }
         }
         msg.setContent(content);
-        msg.setHeader("X-Mailer", mailer);
+        msg.setHeader(Constants.HEADER_X_MAILER, this.mailer);
         msg.setSentDate(new Date());
         return msg;
     }
@@ -125,18 +126,18 @@ public class OkMailClient {
 
     private MimeBodyPart buildHtmlPart(String html) throws MessagingException {
         MimeBodyPart bodyPart = new MimeBodyPart();
-        bodyPart.setContent(html, "text/html; charset=utf-8");
+        bodyPart.setContent(html, Constants.MEDIA_TYPE_HTML);
         return bodyPart;
     }
 
     private Properties getConfig() {
         Properties props = new Properties();
-        props.put("mail.smtp.auth", auth.toString());
-        props.put("mail.smtp.ssl.enable", ssl.toString());
-        props.put("mail.transport.protocol", protocol);
-        props.put("mail.debug", debug);
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.port", port);
+        props.put(Constants.MAIL_SMTP_AUTH, auth.toString());
+        props.put(Constants.MAIL_SMTP_SSL_ENABLE, ssl.toString());
+        props.put(Constants.MAIL_TRANSPORT_PROTOCOL, protocol);
+        props.put(Constants.MAIL_DEBUG, debug);
+        props.put(Constants.MAIL_SMTP_HOST, host);
+        props.put(Constants.MAIL_SMTP_PORT, port);
         return props;
     }
 
@@ -149,6 +150,15 @@ public class OkMailClient {
         private Boolean auth;
         private Boolean ssl;
         private Boolean debug;
+        public String mailer;
+
+        public Builder() {
+            this.protocol = Constants.PROTOCOL_SMTP;
+            this.auth = Boolean.TRUE;
+            this.ssl = Boolean.TRUE;
+            this.debug = Boolean.FALSE;
+            this.mailer =  Constants.DEFAULT_MAILER;
+        }
 
         public Builder host(String host) {
             this.host = host;
@@ -159,44 +169,43 @@ public class OkMailClient {
             this.port = port;
             return this;
         }
+
         public Builder protocol(String protocol) {
             this.protocol = protocol;
             return this;
         }
+
         public Builder username(String username) {
             this.username = username;
             return this;
         }
+
         public Builder password(String password) {
             this.password = password;
             return this;
         }
+
         public Builder auth(boolean auth) {
             this.auth = auth;
             return this;
         }
+
         public Builder ssl(boolean ssl) {
             this.ssl = ssl;
             return this;
         }
+
         public Builder debug(boolean debug) {
             this.debug = debug;
             return this;
         }
 
+        public Builder mailer(String mailer) {
+            this.mailer = mailer;
+            return this;
+        }
+
         public OkMailClient build() {
-            if(StringUtils.isBlank(this.protocol)){
-                this.protocol = "smtp";
-            }
-            if(this.auth==null) {
-                this.auth = Boolean.TRUE;
-            }
-            if(this.ssl==null) {
-                this.ssl = Boolean.TRUE;
-            }
-            if(this.debug==null) {
-                this.debug = Boolean.FALSE;
-            }
             return new OkMailClient(this);
         }
     }
