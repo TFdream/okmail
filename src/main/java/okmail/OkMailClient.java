@@ -140,7 +140,7 @@ public class OkMailClient {
         return props;
     }
 
-    static class Builder {
+    public static class Builder {
         private String host;
         private int port;
         private String protocol;  //默认smtp
